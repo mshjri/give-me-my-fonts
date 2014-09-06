@@ -34,14 +34,13 @@ if [ -d "$CC_INSTALLED_DIR" ] && [ "$(ls -A "$CC_INSTALLED_DIR")" ]; then
     
     # Check for PIL, otherwise download it, yo (requires sudo, ouch)
     # ==============================================================
-    hash $(python -c 'from PIL import ImageFont') &>/dev/null
-    if [ $? -eq 1 ]; then
+    if ! $(python -c "from PIL import ImageFont" &> /dev/null); then
       printf "\nWe need to install Pillow, the \"friendly PIL fork\" (Python Imaging Library)\n"
-      printf "and (SORRY) need sudo rights (your mac password)...\n"
+      printf "and (SORRY) need sudo rights (your mac password)...\n\n"
       if hash pip 2>/dev/null; then
         sudo pip install Pillow    
       else
-        printf "\nBut first we need to install pip, a python package manager...\n"
+        printf "\nBut first we need to install pip, a python package manager...\n\n"
         curl -O https://bootstrap.pypa.io/get-pip.py   
         python get-pip.py
         rm get-pip.py
@@ -54,7 +53,7 @@ if [ -d "$CC_INSTALLED_DIR" ] && [ "$(ls -A "$CC_INSTALLED_DIR")" ]; then
 
     # Let's get to business
     # =====================
-    for i in `ls -aF | egrep '^\..*[^/]$'`
+    for i in `ls -aF | egrep '^\.[0-9]+.*[^/]$'`
       do 
         font_name=$(python $DIR/extract-font-name.py $i 2>&1) 
         font_format=${i##*.}
