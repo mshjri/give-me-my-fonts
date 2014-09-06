@@ -33,8 +33,8 @@ Whatever.  I'm just trying to edit Photoshop files for **personal use**.
 1. Clone the repo `git clone git@github.com:fitzhaile/give-me-my-fonts.git` or [download the zip file](https://github.com/fitzhaile/give-me-my-fonts/archive/master.zip).
 2. Run the script. Either:
 
-* `cd` into the repo directory and just run `./give-me-my-fonts.sh`
-* Double-click the `give-me-my-fonts.command` execuatable in the repo directory
+* Run `give-me-my-fonts/give-me-my-fonts.sh`
+* Or, double-click the `give-me-my-fonts.command` execuatable in the repo directory
 
 ### Requirements:
 

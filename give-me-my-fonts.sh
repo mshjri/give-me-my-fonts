@@ -60,7 +60,7 @@ if [ -d "$CC_INSTALLED_DIR" ] && [ "$(ls -A "$CC_INSTALLED_DIR")" ]; then
         font_format=${i##*.}
         font_file="$font_name.$font_format"
         printf "Found '$i' ... copying, renaming to '$font_file' ... "
-        mv $i $font_file
+        mv $i "$font_file"
         printf "done!\n"
     done 2>/dev/null
     printf "\nJoy! \n\nYour Creative Cloud fonts are now in the \"$CC_HOME_DIR\" \nfolder in your home directory ($HOME).\n\n"    
