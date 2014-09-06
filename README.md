@@ -17,7 +17,7 @@ This means that if you want to package or send fonts included in a design file, 
 
 *So...* 
 
-[Give Me My Fonts](https://github.com/fitzhaile/give-me-my-fonts) is a crude script to find, copy and usefully rename Adobe Creative Cloud Fonts to a folder in your HOME directory.
+[Give Me My Fonts](https://github.com/fitzhaile/give-me-my-fonts) is a crude script to extract hidden Adobe Creative Cloud / Typekit fonts to a folder in your home directory.
 
 I say "crude" because:
 
@@ -26,7 +26,7 @@ I say "crude" because:
 
 ### But...
 
-Whatever.  I'm just trying to edit Photoshop files for *personal use*. 
+Whatever.  I'm just trying to edit Photoshop files for **personal use**. 
 
 ## Usage
 
@@ -38,6 +38,8 @@ Whatever.  I'm just trying to edit Photoshop files for *personal use*.
 
 ### Requirements:
 
+- OS X
+- Adobe Creative Cloud
 - Python
 - `sudo` rights (sorry)
 
@@ -45,7 +47,7 @@ Whatever.  I'm just trying to edit Photoshop files for *personal use*.
 
 Adobe hides your font files by making both the directory hidden and obscure, and the actual names of the fonts.  The script only does the following:
 
-1. Copies the fonts (only the ones *managaged with TypeKit/Creative Cloud*) from the hidden, cryptic Adobe app filesystem netherworld into a folder called "Adobe Creative Cloud Fonts" in your HOME directory.
+1. Copies the fonts (only the ones **managaged with TypeKit/Creative Cloud**) from the hidden, cryptic Adobe app filesystem netherworld into a folder called "Adobe Creative Cloud Fonts" in your HOME directory.
 2. Uses [Pillow](https://pypi.python.org/pypi/Pillow) (the ‘friendly’ PIL fork) to read font data since the fonts themselveves are also hidden *and* obscured by being named things like `.232343.otf`
 3. If you don't have Pillow/PIL installed, it will attempt to download and install the python package manager `pip` (if you don't already have it) and install Pillow. (Which needs sudo access.)
 

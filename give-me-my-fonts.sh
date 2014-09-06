@@ -1,6 +1,6 @@
 #!/bin/bash
 # give-me-my-fonts.sh
-# A crude script to find, copy and rename Adobe Creative Cloud Fonts to a folder in your HOME directory.
+# A crude script to extract hidden Adobe Creative Cloud / Typekit fonts to a folder in your home directory.
 
 
 # DIRECTORIES 
