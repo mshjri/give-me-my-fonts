@@ -1,43 +1,51 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # give-me-my-fonts.sh
 # A crude script to extract hidden Adobe Creative Cloud / Typekit fonts to a folder in your home directory.
 
 
-# DIRECTORIES 
-# ===========     
+### Configuration
+#####################################################################
 
-# Current script directory
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+# Exit on error. Append ||true if you expect an error.
+set -o errexit
+set -o nounset
+
+# Bash will remember & return the highest exitcode in a chain of pipes.
+set -o pipefail
+
+# Set magic variables for current FILE & DIR
+__dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+__file="${__dir}/$(basename "${0}")" 
 
 # My temp test directory
-#CC_INSTALLED_DIR=$HOME/Desktop/hidden\ fonts/.r
+#CC_FONT_DIR=$HOME/Desktop/hidden\ fonts/.r
 
 # Adobe font directory
-CC_INSTALLED_DIR=$HOME/Library/Application\ Support/Adobe/CoreSync/plugins/livetype/.r
+CC_FONT_DIR=$HOME/Library/Application\ Support/Adobe/CoreSync/plugins/livetype/.r
 
 # Directory in your $HOME to put the extracted and renamed fonts
-CC_HOME_DIR=Adobe\ Creative\ Cloud\ Fonts
+HOME_FONT_DIR=Adobe\ Creative\ Cloud\ Fonts
 
+
+### App
+#####################################################################
 
 # Check for synced fonts locally
-# ==============================
-if [ -d "$CC_INSTALLED_DIR" ] && [ "$(ls -A "$CC_INSTALLED_DIR")" ]; then
+if [ -d "$CC_FONT_DIR" ] && [ "$(ls -A "$CC_FONT_DIR")" ]; then
 
-  # Copy the hidden fonts to your new $CC_HOME_DIR
-  # ==============================================
-  mkdir -p $HOME/"$CC_HOME_DIR"
-  cp -r "$CC_INSTALLED_DIR/" $HOME/"$CC_HOME_DIR" && cd $HOME/"$CC_HOME_DIR"
+  # Copy the hidden fonts to your new $HOME_FONT_DIR
+  mkdir -p $HOME/"$HOME_FONT_DIR"
+  cp -r "$CC_FONT_DIR/" $HOME/"$HOME_FONT_DIR"
+  cd $HOME/"$HOME_FONT_DIR"
 
-  # First check that we're in the new $CC_HOME (don't blow away your dotfiles!)
-  # ===========================================================================
-  if [ "${PWD##*/}" == "$CC_HOME_DIR" ]; then  
+  # First check that we're in the new font dir
+  if [ "${PWD##*/}" == "$HOME_FONT_DIR" ]; then  
     
-    # Check for PIL, otherwise download it, yo (requires sudo, ouch)
-    # ==============================================================
+    # Check for PIL, otherwise download it, yo
     hash $(python -c 'from PIL import ImageFont') &>/dev/null
     if [ $? -eq 1 ]; then
       printf "\nWe need to install Pillow, the \"friendly PIL fork\" (Python Imaging Library)\n"
-      printf "and (SORRY) need sudo rights (your mac password)...\n"
+      printf "and need sudo rights (your mac password)...\n"
       if hash pip 2>/dev/null; then
         sudo pip install Pillow    
       else
@@ -53,24 +61,21 @@ if [ -d "$CC_INSTALLED_DIR" ] && [ "$(ls -A "$CC_INSTALLED_DIR")" ]; then
     fi
 
     # Let's get to business
-    # =====================
     for i in `ls -aF | egrep '^\..*[^/]$'`
       do 
-        font_name=$(python $DIR/extract-font-name.py $i 2>&1) 
+        font_name=$(python $__dir/extract-font-name.py $i 2>&1) 
         font_format=${i##*.}
         font_file="$font_name.$font_format"
-        printf "Found '$i' ... copying, renaming to '$font_file' ... "
+        printf "Found $i, copying, renaming -> $font_file\n"
         mv $i "$font_file"
-        printf "done!\n"
     done 2>/dev/null
-    printf "\nJoy! \n\nYour Creative Cloud fonts are now in the \"$CC_HOME_DIR\" \nfolder in your home directory ($HOME).\n\n"    
+    printf "\nAwesome. \n\nYour Creative Cloud fonts are now in the \"$HOME_FONT_DIR\" \nfolder in your home directory ($HOME).\n\n"    
     printf "Enjoy responsibly (i.e. legally)\n\n"
   else
     echo "Something went wrong. Rats."
   fi
 
 # Or not...
-# =========
 else
   printf "\nHrmph. Seems you either don't have Creative Cloud installed or don't have "
   printf "\nany fonts synced on your local machine. \n\nGet some!\n"

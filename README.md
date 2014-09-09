@@ -1,7 +1,7 @@
 Give Me My Fonts!
 ================
 
-Anyone who has used Adobe's awesome [Creative Cloud](http://www.adobe.com/creativecloud.html) service has probably come to the annoying realization that fonts bought / managed with Creative Cloud and thus TypeKit are hidden safely away in the cryptic Adobe filesystem universe and not available to you to use / send / play with in Font Book or in any other capacity other than inside Adobe's walled garden.
+Anyone who has used Adobe's [Creative Cloud](http://www.adobe.com/creativecloud.html) service has probably come to the annoying realization that fonts bought / managed with Creative Cloud and thus TypeKit are hidden safely away in the cryptic Adobe filesystem universe and not available to you to use / send / play with in Font Book or in any other capacity other than inside Adobe's walled garden.
 
 This means that if you want to package or send fonts included in a design file, the person who you are sending it to has to have a TypeKit subscription. 
 
@@ -26,7 +26,7 @@ I say "crude" because:
 
 ### But...
 
-Whatever.  I'm just trying to edit Photoshop files for **personal use**. 
+Whatever. I'm just trying to edit Photoshop files.
 
 ## Usage
 
@@ -47,7 +47,7 @@ Whatever.  I'm just trying to edit Photoshop files for **personal use**.
 
 Adobe hides your font files by making both the directory hidden and obscure, and the actual names of the fonts.  The script only does the following:
 
-1. Copies the fonts (only the ones **managaged with TypeKit/Creative Cloud**) from the hidden, cryptic Adobe app filesystem netherworld into a folder called "Adobe Creative Cloud Fonts" in your HOME directory.
+1. Copies the fonts (only the ones **managaged with TypeKit/Creative Cloud**) from the hidden, cryptic Adobe app filesystem into a folder called "Adobe Creative Cloud Fonts" in your HOME directory.
 2. Uses [Pillow](https://pypi.python.org/pypi/Pillow) (the ‘friendly’ PIL fork) to read font data since the fonts themselveves are also hidden *and* obscured by being named things like `.232343.otf`
 3. If you don't have Pillow/PIL installed, it will attempt to download and install the python package manager `pip` (if you don't already have it) and install Pillow. (Which needs sudo access.)
 
