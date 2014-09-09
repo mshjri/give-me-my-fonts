@@ -18,10 +18,10 @@ __dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 __file="${__dir}/$(basename "${0}")" 
 
 # My temp test directory
-#CC_FONT_DIR=$HOME/Desktop/hidden\ fonts/.r
+CC_FONT_DIR=$HOME/Desktop/hidden\ fonts/.r
 
 # Adobe font directory
-CC_FONT_DIR=$HOME/Library/Application\ Support/Adobe/CoreSync/plugins/livetype/.r
+#CC_FONT_DIR=$HOME/Library/Application\ Support/Adobe/CoreSync/plugins/livetype/.r
 
 # Directory in your $HOME to put the extracted and renamed fonts
 HOME_FONT_DIR=Adobe\ Creative\ Cloud\ Fonts
@@ -41,15 +41,15 @@ if [ -d "$CC_FONT_DIR" ] && [ "$(ls -A "$CC_FONT_DIR")" ]; then
   # First check that we're in the new font dir
   if [ "${PWD##*/}" == "$HOME_FONT_DIR" ]; then  
     
-    # Check for PIL, otherwise download it, yo
-    hash $(python -c 'from PIL import ImageFont') &>/dev/null
-    if [ $? -eq 1 ]; then
+
+    # Check for PIL, otherwise download it, yo 
+    if ! $(python -c "from PIL import ImageFont" &> /dev/null); then
       printf "\nWe need to install Pillow, the \"friendly PIL fork\" (Python Imaging Library)\n"
-      printf "and need sudo rights (your mac password)...\n"
+      printf "and (SORRY) need sudo rights (your mac password)...\n\n"
       if hash pip 2>/dev/null; then
         sudo pip install Pillow    
       else
-        printf "\nBut first we need to install pip, a python package manager...\n"
+        printf "\nBut first we need to install pip, a python package manager...\n\n"
         curl -O https://bootstrap.pypa.io/get-pip.py   
         python get-pip.py
         rm get-pip.py
@@ -61,7 +61,7 @@ if [ -d "$CC_FONT_DIR" ] && [ "$(ls -A "$CC_FONT_DIR")" ]; then
     fi
 
     # Let's get to business
-    for i in `ls -aF | egrep '^\..*[^/]$'`
+    for i in `ls -aF | egrep '^\.[0-9]+.*[^/]$'`
       do 
         font_name=$(python $__dir/extract-font-name.py $i 2>&1) 
         font_format=${i##*.}
