@@ -21,7 +21,7 @@ This means that if you want to package or send fonts included in a design file, 
 
 I say "crude" because:
 
-- It's my first Bash script and is pretty ugly
+- It's my first Bash script and is quick-and-dirty / ugly
 - It's probably (definitely) against Adobe's TOS
 
 ### But...

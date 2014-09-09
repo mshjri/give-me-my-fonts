@@ -3,7 +3,7 @@
 # A crude script to extract hidden Adobe Creative Cloud / Typekit fonts to a folder in your home directory.
 
 
-### Configuration
+### Config
 #####################################################################
 
 # Exit on error. Append ||true if you expect an error.
@@ -18,10 +18,10 @@ __dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 __file="${__dir}/$(basename "${0}")" 
 
 # My temp test directory
-CC_FONT_DIR=$HOME/Desktop/hidden\ fonts/.r
+#CC_FONT_DIR=$HOME/Desktop/hidden\ fonts/.r
 
 # Adobe font directory
-#CC_FONT_DIR=$HOME/Library/Application\ Support/Adobe/CoreSync/plugins/livetype/.r
+CC_FONT_DIR=$HOME/Library/Application\ Support/Adobe/CoreSync/plugins/livetype/.r
 
 # Directory in your $HOME to put the extracted and renamed fonts
 HOME_FONT_DIR=Adobe\ Creative\ Cloud\ Fonts
@@ -31,21 +31,22 @@ HOME_FONT_DIR=Adobe\ Creative\ Cloud\ Fonts
 #####################################################################
 
 # Check for synced fonts locally
-if [ -d "$CC_FONT_DIR" ] && [ "$(ls -A "$CC_FONT_DIR")" ]; then
+if [ -d "${CC_FONT_DIR}" ] && [ "$(ls -A "${CC_FONT_DIR}")" ]; then
 
   # Copy the hidden fonts to your new $HOME_FONT_DIR
-  mkdir -p $HOME/"$HOME_FONT_DIR"
-  cp -r "$CC_FONT_DIR/" $HOME/"$HOME_FONT_DIR"
-  cd $HOME/"$HOME_FONT_DIR"
+  mkdir -p "${HOME}/${HOME_FONT_DIR}"
+  cp -r "${CC_FONT_DIR}/" "${HOME}/${HOME_FONT_DIR}"
+  cd "${HOME}/${HOME_FONT_DIR}"
 
   # First check that we're in the new font dir
-  if [ "${PWD##*/}" == "$HOME_FONT_DIR" ]; then  
-    
+  if [ "${PWD##*/}" == "${HOME_FONT_DIR}" ]; then  
 
-    # Check for PIL, otherwise download it, yo 
+    # Check for PIL, otherwise download it
     if ! $(python -c "from PIL import ImageFont" &> /dev/null); then
+      
       printf "\nWe need to install Pillow, the \"friendly PIL fork\" (Python Imaging Library)\n"
       printf "and (SORRY) need sudo rights (your mac password)...\n\n"
+      
       if hash pip 2>/dev/null; then
         sudo pip install Pillow    
       else
@@ -56,21 +57,24 @@ if [ -d "$CC_FONT_DIR" ] && [ "$(ls -A "$CC_FONT_DIR")" ]; then
         printf "\nOk, now Pillow (and sudo)...\n"
         sudo pip install Pillow
       fi
+
     else
       printf "\nSweet. You've got everything on your system we need to make this happen. \n\nHere we go...\n\n"
     fi
 
-    # Let's get to business
+    # Let's get to the business of reading font data and renaming
     for i in `ls -aF | egrep '^\.[0-9]+.*[^/]$'`
       do 
         font_name=$(python $__dir/extract-font-name.py $i 2>&1) 
-        font_format=${i##*.}
-        font_file="$font_name.$font_format"
-        printf "Found $i, copying, renaming -> $font_file\n"
+        font_format="${i##*.}"
+        font_file="${font_name}.${font_format}"
+        printf "Found ${i}, copying, renaming -> ${font_file}\n"
         mv $i "$font_file"
     done 2>/dev/null
-    printf "\nAwesome. \n\nYour Creative Cloud fonts are now in the \"$HOME_FONT_DIR\" \nfolder in your home directory ($HOME).\n\n"    
-    printf "Enjoy responsibly (i.e. legally)\n\n"
+    
+    printf "\nAwesome. \n\nYour Creative Cloud fonts are now in the \"${HOME_FONT_DIR}\" \nfolder in your home directory (${HOME}).\n\n"    
+    printf "Enjoy responsibly.\n\n"
+  
   else
     echo "Something went wrong. Rats."
   fi
